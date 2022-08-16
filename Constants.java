@@ -10,7 +10,7 @@ public class Constants {
     public static final String lastupdate = "\nList last updated on ";
     public static final String question = "?";
     public static final String found = "We found it!";
-    public static final String c = "c";
+    public static final String cnt = "c";
     public static final String wordFound = " word(s) found ";
     public static final String studentList= "students.txt";
 

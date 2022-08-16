@@ -9,8 +9,7 @@ public class StudentList {
 			System.out.println(Constants.loadingData);			
 			try {
 				BufferedReader reader = read();
-			    String allStudent = reader.readLine();
-			    String names[] = allStudent.split(",");
+			    String names[] = reader.readLine().split(",");
 			    for(String name : names) {
 					System.out.println(name.trim());
 				}
@@ -25,9 +24,7 @@ public class StudentList {
 			System.out.println(Constants.loadingData);			
 			try {
 				BufferedReader reader = read();
-			    String allStudent = reader.readLine();
-		    	System.out.println(allStudent);
-		    	String names[] = allStudent.split(Constants.comma);
+		    	String names[] = reader.readLine().split(Constants.comma);
 			    Random rand= new Random();
 			    int rand_index = rand.nextInt(names.length);
 				System.out.println(names[rand_index].trim());
@@ -58,42 +55,36 @@ public class StudentList {
 			System.out.println(Constants.loadingData);			
 			try {
 				BufferedReader reader = read();
-			    String allStudents = reader.readLine();
-			    String names[] = allStudents.split(Constants.comma);
-			    boolean done = false;
+			    String names[] = reader.readLine().split(Constants.comma);
+			    int countName=0;
 		     	String student = args[0].substring(1);
-			    for(int idx = 0; idx<names.length && !done; idx++) {
-					if(names[idx].equals(student)) {
-					System.out.println(Constants.found);
-					done=true;
+			    for(int idx = 0; idx<names.length ; idx++) {
+					if(names[idx].trim().equals(student)) {
+					countName++;
 					}
 				}
+				if(countName == 0) {
+					System.out.println("Name not found!");
+				}
+				else {
+					System.out.println(countName + " name found!");
+				}
+				reader.close();
+
+			
 			  } catch (Exception e) {
 				System.out.println(e);
 			}
 			System.out.println(Constants.loadData);				
 		}
-		else if(args[0].contains(Constants.c)) {
+		else if(args[0].contains(Constants.cnt)) {
 			System.out.println(Constants.loadingData);			
 			try {
 				BufferedReader reader = read();
-		     	String students = reader.readLine();
-			    char names[] = students.toCharArray();
-			    boolean in_word = false;
-			    int count=0;
-			    for(char name:names) {
-					if(name ==' ') {
-					if (!in_word) {
-						count++;
-						in_word =true;
-					}
+			    String names[] = reader.readLine().split(Constants.comma);
+			    System.out.println(names.length + Constants.wordFound);
+				reader.close();
 
-					else {
-						in_word=false;
-				    	}
-			    	}
-		    	}
-			    System.out.println(count + Constants.wordFound + names.length);
 			} catch (Exception e) {
 				System.out.println(e);
 			}
