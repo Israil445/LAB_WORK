@@ -3,48 +3,39 @@ import java.text.*;
 import java.util.*;
 public class StudentList {
 	public static void main(String[] args) {
+		if(args.length != 1) {
+			System.out.println(Constants.usage);
+			return;
 
-//		Check arguments
-		if(args[0].equals(Constants.showAll)) {
+		}
+	    else if(args[0].equals(Constants.showAll)) {
+
 			System.out.println(Constants.loadingData);			
-			try {
-				BufferedReader reader = read();
-			    String names[] = reader.readLine().split(",");
-			    for(String name : names) {
+			String names[] = fileToStringArray(Constants.studentList);
+			for(String name : names) {
 					System.out.println(name.trim());
 				}
-
-			} catch (Exception e) {
-				System.out.println(e);
-			}
 			System.out.println(Constants.loadData);
 		}
 
 		else if(args[0].equals(Constants.random)) {
 			System.out.println(Constants.loadingData);			
-			try {
-				BufferedReader reader = read();
-		    	String names[] = reader.readLine().split(Constants.comma);
-			    Random rand= new Random();
-			    int rand_index = rand.nextInt(names.length);
-				System.out.println(names[rand_index].trim());
-			} catch (Exception e) {
-				System.out.println(e);
-			}
+		    String names[] = fileToStringArray(Constants.studentList);
+			Random rand = new Random();
+			System.out.println(names[rand.nextInt(names.length)].trim());
 			System.out.println(Constants.loadData);			
 		}
 
 		else if(args[0].contains(Constants.plus)) {
 			System.out.println(Constants.loadingData);			
 			try {
-				BufferedWriter reader = write();
+				BufferedWriter writer = writeToFile(Constants.studentList); 
 			    String student = args[0].substring(1);
 				Date date = new Date();
-	            String dateFormatString = Constants.dateFormate;
-				DateFormat dateFormat = new SimpleDateFormat(dateFormatString);
+				DateFormat dateFormat = new SimpleDateFormat(Constants.dateFormate);
 	            String formatDate= dateFormat.format(date);
-			    reader.write(Constants.comma + " " + student + Constants.lastupdate + formatDate);
-		     	reader.close();
+			    writer.write(Constants.comma + " " + student + Constants.lastupdate + formatDate);
+		     	writer.close();
 			} catch (Exception e) {
 				System.out.println(e);
 			}
@@ -53,42 +44,32 @@ public class StudentList {
 		}
 		else if(args[0].contains(Constants.question)) {
 			System.out.println(Constants.loadingData);			
-			try {
-				BufferedReader reader = read();
-			    String names[] = reader.readLine().split(Constants.comma);
-			    int countName=0;
-		     	String student = args[0].substring(1);
+			String names[] = fileToStringArray(Constants.studentList);
+			int countName=0;
+		    String student = args[0].substring(1);
 			    for(int idx = 0; idx<names.length ; idx++) {
 					if(names[idx].trim().equals(student)) {
-					countName++;
+					countName=countName + 1;
 					}
 				}
 				if(countName == 0) {
-					System.out.println("Name not found!");
+					System.out.println(Constants.nameNotFound);
 				}
 				else {
-					System.out.println(countName + " name found!");
+					System.out.println(countName + " data " + Constants.namefound);
 				}
-				reader.close();
-
-			
-			  } catch (Exception e) {
-				System.out.println(e);
-			}
 			System.out.println(Constants.loadData);				
 		}
 		else if(args[0].contains(Constants.cnt)) {
 			System.out.println(Constants.loadingData);			
-			try {
-				BufferedReader reader = read();
-			    String names[] = reader.readLine().split(Constants.comma);
-			    System.out.println(names.length + Constants.wordFound);
-				reader.close();
-
-			} catch (Exception e) {
-				System.out.println(e);
-			}
+			String names[] = fileToStringArray(Constants.studentList);
+			System.out.println(names.length + Constants.wordFound);
 			System.out.println(Constants.loadData);				
+		} else {
+
+			System.out.println(Constants.invalidArg); // No arguments matches
+			System.out.println(Constants.usage);
+
 		}
 
 
@@ -117,6 +98,31 @@ public class StudentList {
 
 
 	}
-}
+
+	public static String[] fileToStringArray(String fileName) {
+		try {
+			BufferedReader bufferedReader = new BufferedReader(
+				new InputStreamReader(
+						new FileInputStream(fileName)));
+			String stringName[] = bufferedReader.readLine().split(Constants.comma);
+			bufferedReader.close();
+			return stringName;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private static BufferedWriter writeToFile(String fileName) throws IOException {  // returns a buffered file writer
+		BufferedWriter bufferedWriter = new BufferedWriter(
+				new FileWriter(fileName, true));
+		return bufferedWriter;
+	}
+
+
+	}
+
+
+
 
 
